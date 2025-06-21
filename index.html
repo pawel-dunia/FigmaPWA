@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PWA Figma Wrapper</title>
+  <link rel="manifest" href="/FigmaPWA/manifest.webmanifest">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+</head>
+<body>
+  <div id="ui">
+    <input id="figma-link" placeholder="Link do Figma"/>
+    <button id="gen-qr">QR i PWA</button><br><canvas id="qr"></canvas>
+  </div>
+  <iframe id="figma-frame" style="width:100%;height:100%;border:none;display:none;"></iframe>
+
+  <script src="/FigmaPWA/qr-generator.js"></script>
+  <script>
+    if (location.search.includes('proto=')) {
+      document.getElementById('ui').style.display = 'none';
+      const url = new URLSearchParams(location.search).get('proto');
+      Object.assign(document.getElementById('figma-frame'), { src: url, style: 'display:block;' });
+    }
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.register('/FigmaPWA/sw.js', { scope: '/FigmaPWA/' });
+    }
+  </script>
+</body>
+</html>
